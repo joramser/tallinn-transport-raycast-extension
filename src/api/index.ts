@@ -42,3 +42,8 @@ export async function fetchStops() {
   const res = await fetch(`${BASE_URL}/data/stops.txt?${Date.now()}`, { headers: HEADERS });
   return res.text();
 }
+
+export async function fetchAnnouncements() {
+  const res = await fetch(`${BASE_URL}/announcements.json?${Date.now()}`, { headers: HEADERS });
+  return res.json();
+}
