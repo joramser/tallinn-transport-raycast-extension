@@ -26,7 +26,6 @@
   "dependencies": {
     "@raycast/api": "^1.101.1",
     "@raycast/utils": "^2.2.0",
-    "@tanstack/react-query": "^5.83.0",
     "date-fns": "^4.1.0",
     "papaparse": "^5.5.3",
     "turndown": "^7.2.0"

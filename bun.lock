@@ -6,7 +6,6 @@
       "dependencies": {
         "@raycast/api": "^1.101.1",
         "@raycast/utils": "^2.2.0",
-        "@tanstack/react-query": "^5.83.0",
         "date-fns": "^4.1.0",
         "papaparse": "^5.5.3",
         "turndown": "^7.2.0",
@@ -153,10 +152,6 @@
     "@raycast/eslint-plugin": ["@raycast/eslint-plugin@2.0.7", "", { "dependencies": { "@typescript-eslint/utils": "^8.26.1" }, "peerDependencies": { "eslint": ">=8.23.0" } }, "sha512-4dAdua+TFQu7ay3EuDmg5nT7boIAj3Rjf0V1aQ3w5uAx/j98DvI91h/zbbkVb4mIXCom1w7SfRrZQzYIOE+tZw=="],
 
     "@raycast/utils": ["@raycast/utils@2.2.0", "", { "dependencies": { "dequal": "^2.0.3" }, "peerDependencies": { "@raycast/api": ">=1.99.4", "react": ">=19.0.0" }, "optionalPeers": ["react"] }, "sha512-K7ffrYh9bktLqrXVP/+QjcxwFoibJ9ADaTyoHEJMON7Qqq05/uJC4hw+q0Gr15pHi8X0w6kTzv3r2cBe8OEWMQ=="],
-
-    "@tanstack/query-core": ["@tanstack/query-core@5.83.0", "", {}, "sha512-0M8dA+amXUkyz5cVUm/B+zSk3xkQAcuXuz5/Q/LveT4ots2rBpPTZOzd7yJa2Utsf8D2Upl5KyjhHRY+9lB/XA=="],
-
-    "@tanstack/react-query": ["@tanstack/react-query@5.83.0", "", { "dependencies": { "@tanstack/query-core": "5.83.0" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-/XGYhZ3foc5H0VM2jLSD/NyBRIOK4q9kfeml4+0x2DlL6xVuAcVEW+hTlTapAmejObg0i3eNqhkr2dT+eciwoQ=="],
 
     "@types/bun": ["@types/bun@1.2.19", "", { "dependencies": { "bun-types": "1.2.19" } }, "sha512-d9ZCmrH3CJ2uYKXQIUuZ/pUnTqIvLDS0SK7pFmbx8ma+ziH/FRMoAq5bYpRG7y+w1gl+HgyNZbtqgMq4W4e2Lg=="],
 

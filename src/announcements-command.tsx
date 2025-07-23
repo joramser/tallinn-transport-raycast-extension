@@ -1,5 +1,5 @@
-import { ActionPanel, List, showToast, Toast } from "@raycast/api";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { ActionPanel, List } from "@raycast/api";
+import { usePromise } from "@raycast/utils";
 import { useState } from "react";
 import TurndownService from "turndown";
 import { Announcement, getAnnouncements } from "./service/announcements";
@@ -7,19 +7,12 @@ import { Announcement, getAnnouncements } from "./service/announcements";
 const turndownService = new TurndownService();
 
 function AnnouncementsList() {
-  const { data, isLoading, error } = useQuery<Announcement[]>({
-    queryKey: ["announcements"],
-    queryFn: getAnnouncements,
+  const { data, isLoading } = usePromise(() => getAnnouncements(), [], {
+    failureToastOptions: {
+      title: "Error fetching announcements",
+    },
   });
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  if (error) {
-    showToast({
-      title: "Error fetching announcements",
-      message: error instanceof Error ? error.message : String(error),
-      style: Toast.Style.Failure,
-    });
-  }
 
   return (
     <List
@@ -52,12 +45,6 @@ function AnnouncementsList() {
   );
 }
 
-const queryClient = new QueryClient();
-
 export default function Command() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AnnouncementsList />
-    </QueryClientProvider>
-  );
+  return <AnnouncementsList />;
 }

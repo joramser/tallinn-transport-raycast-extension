@@ -1,5 +1,5 @@
-import { Action, ActionPanel, Color, Icon, List, showToast, Toast } from "@raycast/api";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
+import { usePromise } from "@raycast/utils";
 import { useMemo } from "react";
 
 import { formatDistanceToNow, isAfter } from "date-fns";
@@ -9,18 +9,10 @@ import { type Stop } from "./service/stops";
 import { getTimetables, getWorkdayType, type Timetable } from "./service/timetables";
 
 function RoutesList() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["routes"],
-    queryFn: () =>
-      getAllRoutesData()
-        .then((data) => data)
-        .catch((error) => {
-          showToast({
-            title: "Error fetching routes from Tallinn Transport",
-            message: error.message,
-            style: Toast.Style.Failure,
-          });
-        }),
+  const { data, isLoading } = usePromise(() => getAllRoutesData(), [], {
+    failureToastOptions: {
+      title: "Error fetching routes from Tallinn Transport",
+    },
   });
 
   return (
@@ -105,12 +97,6 @@ const StopTimesScreen = ({ stopName, times }: { stopName: string; times: Timetab
   );
 };
 
-const queryClient = new QueryClient();
-
 export default function Command() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RoutesList />
-    </QueryClientProvider>
-  );
+  return <RoutesList />;
 }
