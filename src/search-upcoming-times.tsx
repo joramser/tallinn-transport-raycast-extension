@@ -41,14 +41,14 @@ export function StopsList({ route, stopsMap }: { route: Route; stopsMap: Map<str
 
   return (
     <List navigationTitle={`Stops for route: ${route.number} - ${route.name}`} searchBarPlaceholder="Search stop name">
-      {route.stops.map((stop, index) => {
+      {route.stopIds.map((stopId, index) => {
         const currentStopTimetable = timetable.filter((t) => t.stopIndex === index);
-        const stopName = stopsMap.get(stop)?.name || "Unknown stop";
+        const stopName = stopsMap.get(stopId)?.name || "Unknown stop";
 
         return (
           <List.Item
-            key={stop + index}
-            id={stop}
+            key={stopId + index}
+            id={stopId}
             title={stopName}
             actions={
               <ActionPanel>
@@ -57,7 +57,7 @@ export function StopsList({ route, stopsMap }: { route: Route; stopsMap: Map<str
                   target={<StopTimesScreen stopName={stopName} times={currentStopTimetable} />}
                 />
                 <Action.OpenInBrowser
-                  url={`https://transport.tallinn.ee/#${route.type}/${route.number}/${route.direction}/${stop}`}
+                  url={`https://transport.tallinn.ee/#${route.type}/${route.number}/${route.direction}/${stopId}`}
                 />
               </ActionPanel>
             }

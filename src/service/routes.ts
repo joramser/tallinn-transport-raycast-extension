@@ -6,7 +6,7 @@ export type Route = {
   name: string;
   type: RouteType;
   direction: RouteDirection;
-  stops: string[];
+  stopIds: string[];
   times: string[];
 };
 
@@ -56,7 +56,7 @@ export const extractAllRoutes = (rawRoutes: RouteRaw[]) => {
         name: rawRoute.RouteName,
         type: rawRoute.Transport as RouteType,
         direction: rawRoute.RouteType as RouteDirection,
-        stops: rawRoute.RouteStops.split(","),
+        stopIds: rawRoute.RouteStops.split(","),
         times: rawRoute.times.split(","),
       };
     });
