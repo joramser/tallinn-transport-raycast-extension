@@ -44,7 +44,11 @@ export const getTimetables = (parts: string[]) => {
     }
 
     const workday = parts[allPartsIndex];
-    const repetitions = +parts[allPartsIndex + 1] || +parts[allPartsIndex - 1];
+    const repetitions = +parts[allPartsIndex + 1] || baseTimes.length - workdayIteratorIndex;
+
+    if (workday === "" || workday === "0") {
+      continue;
+    }
 
     for (let i = 0; i < repetitions; i += 1) {
       baseTimes[workdayIteratorIndex].workday = WORKDAY_MAP.get(workday) || "Mon-Fri";
