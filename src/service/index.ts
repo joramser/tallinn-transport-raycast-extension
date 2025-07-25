@@ -1,7 +1,7 @@
+import { fetchRoutes, fetchStops, type RouteRaw, type StopRaw } from "@/api";
+import { extractAllRoutes } from "@/service/routes";
+import { extractAllStops } from "@/service/stops";
 import Papa from "papaparse";
-import { fetchRoutes, fetchStops, type RouteRaw, type StopRaw } from "../api";
-import { extractAllRoutes } from "./routes";
-import { extractAllStops } from "./stops";
 
 export const getAllRoutesData = async () => {
   const [routesRaw, stopsRaw] = await Promise.all([fetchRoutes(), fetchStops()]);

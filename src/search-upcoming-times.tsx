@@ -2,11 +2,11 @@ import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useMemo } from "react";
 
+import { getAllRoutesData } from "@/service";
+import type { Route } from "@/service/routes";
+import type { Stop } from "@/service/stops";
+import { getTimetables, getWorkdayType, type Timetable } from "@/service/timetables";
 import { formatDistanceToNow, isAfter } from "date-fns";
-import { getAllRoutesData } from "./service";
-import type { Route } from "./service/routes";
-import type { Stop } from "./service/stops";
-import { getTimetables, getWorkdayType, type Timetable } from "./service/timetables";
 
 function RoutesList() {
   const { data, isLoading } = usePromise(() => getAllRoutesData(), [], {

@@ -1,4 +1,4 @@
-import type { StopRaw } from "../api";
+import type { StopRaw } from "@/api";
 
 export type Stop = {
   id: string;

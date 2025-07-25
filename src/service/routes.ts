@@ -1,4 +1,4 @@
-import type { RouteBase, RouteRaw } from "../api";
+import type { RouteBase, RouteRaw } from "@/api";
 
 export type Route = {
   id: string;
