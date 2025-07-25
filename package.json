@@ -17,8 +17,14 @@
       "mode": "view"
     },
     {
-      "name": "announcements-command",
-      "title": "View Announcements",
+      "name": "search-stop-departures",
+      "title": "Search departures for a stop",
+      "description": "Search and view real-time upcoming departures for a selected stop",
+      "mode": "view"
+    },
+    {
+      "name": "view-announcements",
+      "title": "View announcements",
       "description": "View public transport announcements for Tallinn",
       "mode": "view"
     }

@@ -2,7 +2,7 @@ import { ActionPanel, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useState } from "react";
 import TurndownService from "turndown";
-import { Announcement, getAnnouncements } from "./service/announcements";
+import { type Announcement, getAnnouncements } from "./service/announcements";
 
 const turndownService = new TurndownService();
 

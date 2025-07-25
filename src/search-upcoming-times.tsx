@@ -4,8 +4,8 @@ import { useMemo } from "react";
 
 import { formatDistanceToNow, isAfter } from "date-fns";
 import { getAllRoutesData } from "./service";
-import { type Route } from "./service/routes";
-import { type Stop } from "./service/stops";
+import type { Route } from "./service/routes";
+import type { Stop } from "./service/stops";
 import { getTimetables, getWorkdayType, type Timetable } from "./service/timetables";
 
 function RoutesList() {
@@ -47,7 +47,7 @@ export function StopsList({ route, stopsMap }: { route: Route; stopsMap: Map<str
 
         return (
           <List.Item
-            key={stopId + index}
+            key={stopId}
             id={stopId}
             title={stopName}
             actions={
@@ -78,11 +78,11 @@ const StopTimesScreen = ({ stopName, times }: { stopName: string; times: Timetab
       {filteredTimes.length === 0 ? (
         <List.Item title="No upcoming times" />
       ) : (
-        filteredTimes.map((time, index) => {
+        filteredTimes.map((time) => {
           const subtitle = isAfter(time.time, now) ? formatDistanceToNow(time.time, { addSuffix: true }) : undefined;
           return (
             <List.Item
-              key={index}
+              key={subtitle}
               title={time.time.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",

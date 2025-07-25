@@ -1,8 +1,9 @@
-import { StopRaw } from "../api";
+import type { StopRaw } from "../api";
 
 export type Stop = {
   id: string;
   name: string;
+  siriId: string;
   neighborStopIds: string[];
 };
 
@@ -19,10 +20,17 @@ export const extractAllStops = (rawStops: StopRaw[]) => {
   const normalizedStops = normalizeStops(rawStops);
 
   const stops = new Map<string, Stop>(
-    normalizedStops.map((stop) => [
-      stop.ID,
-      { id: stop.ID, name: stop.Name || "Unknown stop", neighborStopIds: stop.Stops?.split(",") || [] },
-    ]),
+    normalizedStops
+      .filter((stop) => stop.SiriID)
+      .map((stop) => [
+        stop.ID,
+        {
+          id: stop.ID,
+          name: stop.Name,
+          siriId: stop.SiriID,
+          neighborStopIds: stop.Stops?.split(",") || [],
+        },
+      ]),
   );
 
   return stops;

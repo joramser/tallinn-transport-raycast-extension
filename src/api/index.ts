@@ -16,8 +16,18 @@ export type RouteRaw = RouteBase | RouteTimes;
 
 export type StopRaw = {
   ID: string;
+  SiriID: string;
   Name: string;
   Stops: string;
+};
+
+export type DepartureRaw = {
+  Transport: string;
+  RouteNum: string;
+  ExpectedTimeInSeconds: string;
+  ScheduleTimeInSeconds: string;
+  version20201024: string;
+  [key: string]: string;
 };
 
 export const HEADERS = {
@@ -46,4 +56,10 @@ export async function fetchStops() {
 export async function fetchAnnouncements() {
   const res = await fetch(`${BASE_URL}/announcements.json?${Date.now()}`, { headers: HEADERS });
   return res.json();
+}
+
+export async function fetchDeparturesForStop(siriId: string) {
+  const url = `${BASE_URL}/siri-stop-departures.php?stopid=${siriId}&time=${Date.now()}`;
+  const res = await fetch(url, { headers: HEADERS });
+  return res.text();
 }
