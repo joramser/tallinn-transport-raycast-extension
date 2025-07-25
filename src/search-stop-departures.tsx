@@ -61,8 +61,7 @@ function DeparturesList({ stop }: { stop: Stop }) {
       navigationTitle={`Departures for ${stop.name}`}
       searchBarPlaceholder="Search departure..."
     >
-      {data && data.length > 0 ? (
-        data.map((departure) => (
+      {data?.map((departure) => (
           <List.Item
             key={departure.routeNumber}
             title={`${departure.routeNumber}`}
@@ -82,10 +81,7 @@ function DeparturesList({ stop }: { stop: Stop }) {
               },
             ]}
           />
-        ))
-      ) : (
-        <List.Item title="No departures found" />
-      )}
+      ))}
     </List>
   );
 }
