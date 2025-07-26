@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "tallinn-transport-raycast-extension",
   "title": "Tallinn Transport",
-  "description": "Search for routes and times for buses and trams in Tallinn",
+  "description": "Search routes, view real-time departures, and check announcements for Tallinn's public transport system",
   "categories": [
     "Web"
   ],
@@ -12,19 +12,19 @@
   "commands": [
     {
       "name": "search-upcoming-times",
-      "title": "Search upcoming times",
+      "title": "Search Upcoming Times",
       "description": "Search upcoming times for buses and trams",
       "mode": "view"
     },
     {
       "name": "search-stop-departures",
-      "title": "Search departures for a stop",
+      "title": "Search Departures for a Stop",
       "description": "Search and view real-time upcoming departures for a selected stop",
       "mode": "view"
     },
     {
       "name": "view-announcements",
-      "title": "View announcements",
+      "title": "View Announcements",
       "description": "View public transport announcements for Tallinn",
       "mode": "view"
     }
