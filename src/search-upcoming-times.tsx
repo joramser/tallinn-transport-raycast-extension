@@ -24,7 +24,14 @@ function RoutesList() {
           title={route.number}
           subtitle={route.name}
           keywords={[route.number, route.name]}
-          accessories={[{ tag: { value: route.type, color: route.type === "bus" ? Color.Blue : Color.Red } }]}
+          accessories={[
+            {
+              tag: {
+                value: route.type.charAt(0).toUpperCase() + route.type.slice(1),
+                color: route.type === "bus" ? Color.Blue : Color.Red,
+              },
+            },
+          ]}
           actions={
             <ActionPanel>
               <Action.Push title="Show Stops" target={<StopsList route={route} stopsMap={data?.stops} />} />

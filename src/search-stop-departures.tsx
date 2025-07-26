@@ -66,11 +66,11 @@ function DeparturesList({ stop }: { stop: Stop }) {
         <List.Item
           key={departure.routeNumber}
           title={`${departure.routeNumber}`}
-          subtitle={`in ${formatDistanceToNow(departure.expectedIn)} - ${format(departure.expectedIn, "HH:mm")}`}
+          subtitle={`in ${formatDistanceToNow(departure.expectedIn)} at ${format(departure.expectedIn, "HH:mm")}`}
           accessories={[
             {
               tag: {
-                value: departure.transportType,
+                value: departure.transportType.charAt(0).toUpperCase() + departure.transportType.slice(1),
                 color: departure.transportType === "bus" ? Color.Blue : Color.Red,
               },
             },
