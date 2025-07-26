@@ -28,6 +28,7 @@ function StopsList() {
             key={stop.id}
             id={stop.id}
             title={stop.name}
+            subtitle={stop.id}
             actions={
               <ActionPanel>
                 <Action.Push title="Show Departures" target={<DeparturesList stop={stop} />} />
@@ -62,25 +63,25 @@ function DeparturesList({ stop }: { stop: Stop }) {
       searchBarPlaceholder="Search departure..."
     >
       {data?.map((departure) => (
-          <List.Item
-            key={departure.routeNumber}
-            title={`${departure.routeNumber}`}
-            subtitle={`in ${formatDistanceToNow(departure.expectedIn)} - ${format(departure.expectedIn, "HH:mm")}`}
-            accessories={[
-              {
-                tag: {
-                  value: departure.transportType,
-                  color: departure.transportType === "bus" ? Color.Blue : Color.Red,
-                },
+        <List.Item
+          key={departure.routeNumber}
+          title={`${departure.routeNumber}`}
+          subtitle={`in ${formatDistanceToNow(departure.expectedIn)} - ${format(departure.expectedIn, "HH:mm")}`}
+          accessories={[
+            {
+              tag: {
+                value: departure.transportType,
+                color: departure.transportType === "bus" ? Color.Blue : Color.Red,
               },
-              {
-                tag: {
-                  value: departure.destination,
-                  color: Color.Green,
-                },
+            },
+            {
+              tag: {
+                value: departure.destination,
+                color: Color.Green,
               },
-            ]}
-          />
+            },
+          ]}
+        />
       ))}
     </List>
   );

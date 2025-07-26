@@ -5,6 +5,8 @@ export type Stop = {
   name: string;
   siriId: string;
   neighborStopIds: string[];
+  latitude: number;
+  longitude: number;
 };
 
 const normalizeStops = (rawStops: StopRaw[]) => {
@@ -29,6 +31,8 @@ export const extractAllStops = (rawStops: StopRaw[]) => {
           name: stop.Name,
           siriId: stop.SiriID,
           neighborStopIds: stop.Stops?.split(",") || [],
+          latitude: Number(stop.Lat) / 100000,
+          longitude: Number(stop.Lng) / 100000,
         },
       ]),
   );

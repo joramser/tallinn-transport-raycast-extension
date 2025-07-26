@@ -19,6 +19,8 @@ export type StopRaw = {
   SiriID: string;
   Name: string;
   Stops: string;
+  Lat: string;
+  Lng: string;
 };
 
 export type DepartureRaw = {
