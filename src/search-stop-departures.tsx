@@ -1,9 +1,9 @@
+import type { Stop } from "@/lib/stops";
+import { getAllRoutesData } from "@/service/all-routes";
+import { getDeparturesForStop } from "@/service/departures";
 import { Action, ActionPanel, Color, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { format, formatDistanceToNow } from "date-fns";
-import { getAllRoutesData } from "./service";
-import { getDeparturesForStop } from "./service/departures";
-import type { Stop } from "./service/stops";
 
 function StopsList() {
   const { data, isLoading } = usePromise(() => getAllRoutesData(), [], {
@@ -12,39 +12,50 @@ function StopsList() {
     },
   });
 
-  const relevantStops = [...new Set(data?.routes.flatMap((route) => route.stopIds))];
-
   return (
     <List isLoading={isLoading} searchBarPlaceholder="Search stop name...">
-      {relevantStops?.map((stopId) => {
-        const stop = data?.stops.get(stopId);
+      {Array.from(data?.stops.values() || [])
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((stop) => {
+          const routes = data?.routes.filter((route) => route.stopIds.includes(stop.id));
 
-        if (!stop) {
-          return null;
-        }
+          const tags = routes?.slice(0, 10).map((route) => ({
+            tag: {
+              value: route.number,
+              color: route.type === "bus" ? Color.Blue : Color.Red,
+            },
+          }));
+          if (routes && routes.length > 10) {
+            tags?.push({
+              tag: {
+                value: "...",
+                color: Color.SecondaryText,
+              },
+            });
+          }
 
-        return (
-          <List.Item
-            key={stop.id}
-            id={stop.id}
-            title={stop.name}
-            subtitle={stop.id}
-            actions={
-              <ActionPanel>
-                <Action.Push title="Show Departures" target={<DeparturesList stop={stop} />} />
-                <Action.OpenInBrowser
-                  title="Open in Google Maps"
-                  url={`https://maps.google.com/?q=${stop.latitude},${stop.longitude}`}
-                />
-                <Action.OpenInBrowser
-                  title="Open in Apple Maps"
-                  url={`https://maps.apple.com/?q=${stop.latitude},${stop.longitude}`}
-                />
-              </ActionPanel>
-            }
-          />
-        );
-      })}
+          return (
+            <List.Item
+              key={stop.id}
+              id={stop.id}
+              title={stop.name}
+              accessories={tags}
+              actions={
+                <ActionPanel>
+                  <Action.Push title="Show Departures" target={<DeparturesList stop={stop} />} />
+                  <Action.OpenInBrowser
+                    title="Open in Google Maps"
+                    url={`https://maps.google.com/?q=${stop.latitude},${stop.longitude}`}
+                  />
+                  <Action.OpenInBrowser
+                    title="Open in Apple Maps"
+                    url={`https://maps.apple.com/?q=${stop.latitude},${stop.longitude}`}
+                  />
+                </ActionPanel>
+              }
+            />
+          );
+        })}
     </List>
   );
 }
@@ -68,12 +79,6 @@ function DeparturesList({ stop }: { stop: Stop }) {
           title={`${departure.routeNumber}`}
           subtitle={`in ${formatDistanceToNow(departure.expectedIn)} at ${format(departure.expectedIn, "HH:mm")}`}
           accessories={[
-            {
-              tag: {
-                value: departure.transportType.charAt(0).toUpperCase() + departure.transportType.slice(1),
-                color: departure.transportType === "bus" ? Color.Blue : Color.Red,
-              },
-            },
             {
               tag: {
                 value: departure.destination,

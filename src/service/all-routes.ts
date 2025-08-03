@@ -1,6 +1,6 @@
 import { fetchRoutes, fetchStops, type RouteRaw, type StopRaw } from "@/api";
-import { extractAllRoutes } from "@/service/routes";
-import { extractAllStops } from "@/service/stops";
+import { extractAllRoutes } from "@/lib/routes";
+import { extractAllStops } from "@/lib/stops";
 import Papa from "papaparse";
 
 export const getAllRoutesData = async () => {
@@ -16,8 +16,8 @@ export const getAllRoutesData = async () => {
     throw new Error("Invalid stops data");
   }
 
-  const routes = extractAllRoutes(parsedRoutes.data);
-  const stops = extractAllStops(parsedStops.data);
+  const { routes, relevantStopIds } = extractAllRoutes(parsedRoutes.data);
+  const { stops } = extractAllStops(parsedStops.data, relevantStopIds);
 
   return { routes, stops };
 };

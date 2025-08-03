@@ -1,6 +1,6 @@
+import { type DepartureRaw, fetchDeparturesForStop } from "@/api";
 import { addSeconds } from "date-fns";
 import Papa from "papaparse";
-import { type DepartureRaw, fetchDeparturesForStop } from "../api";
 
 export type Departure = {
   transportType: string;
@@ -14,7 +14,9 @@ export async function getDeparturesForStop(siriId: string): Promise<Departure[]>
 
   const parsed = Papa.parse<DepartureRaw>(csv, { delimiter: ",", skipEmptyLines: true, header: true });
 
-  if (!Array.isArray(parsed.data)) return [];
+  if (!Array.isArray(parsed.data)) {
+    throw new Error("Invalid departures data");
+  }
 
   return parsed.data
     .filter((row) => row.Transport !== "stop")

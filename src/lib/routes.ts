@@ -6,8 +6,8 @@ export type Route = {
   name: string;
   type: RouteType;
   direction: RouteDirection;
-  stopIds: string[];
   times: string[];
+  stopIds: string[];
 };
 
 export type RouteDirection = "a-b" | "b-a";
@@ -45,19 +45,33 @@ const normalizeRoutes = (rawRoutes: RouteRaw[]) => {
 export const extractAllRoutes = (rawRoutes: RouteRaw[]) => {
   const normalizedRoutes = normalizeRoutes(rawRoutes);
 
-  return normalizedRoutes
-    .filter((rawRoute) => {
-      return ["bus", "tram"].includes(rawRoute.Transport) && ["a-b", "b-a"].includes(rawRoute.RouteType);
-    })
-    .map<Route>((rawRoute) => {
-      return {
-        id: `${rawRoute.RouteNum}-${rawRoute.RouteName}`,
-        number: rawRoute.RouteNum,
-        name: rawRoute.RouteName,
-        type: rawRoute.Transport as RouteType,
-        direction: rawRoute.RouteType as RouteDirection,
-        stopIds: rawRoute.RouteStops.split(","),
-        times: rawRoute.times.split(","),
-      };
+  const routes: Route[] = [];
+  const relevantStopIds = new Set<string>();
+
+  for (const normalizedRoute of normalizedRoutes) {
+    if (!["bus", "tram"].includes(normalizedRoute.Transport) || !["a-b", "b-a"].includes(normalizedRoute.RouteType)) {
+      continue;
+    }
+
+    const stopIds = normalizedRoute.RouteStops.split(",");
+
+    for (const stopId of stopIds) {
+      relevantStopIds.add(stopId);
+    }
+
+    routes.push({
+      id: `${normalizedRoute.RouteNum}-${normalizedRoute.RouteName}`,
+      number: normalizedRoute.RouteNum,
+      name: normalizedRoute.RouteName,
+      type: normalizedRoute.Transport as RouteType,
+      direction: normalizedRoute.RouteType as RouteDirection,
+      times: normalizedRoute.times.split(","),
+      stopIds,
     });
+  }
+
+  return {
+    routes,
+    relevantStopIds,
+  };
 };

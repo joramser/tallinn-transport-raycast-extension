@@ -18,12 +18,12 @@ const normalizeStops = (rawStops: StopRaw[]) => {
   });
 };
 
-export const extractAllStops = (rawStops: StopRaw[]) => {
+export const extractAllStops = (rawStops: StopRaw[], relevantStopIds: Set<string>) => {
   const normalizedStops = normalizeStops(rawStops);
 
   const stops = new Map<string, Stop>(
     normalizedStops
-      .filter((stop) => stop.SiriID)
+      .filter((stop) => stop.SiriID && relevantStopIds.has(stop.ID))
       .map((stop) => [
         stop.ID,
         {
@@ -37,5 +37,5 @@ export const extractAllStops = (rawStops: StopRaw[]) => {
       ]),
   );
 
-  return stops;
+  return { stops };
 };

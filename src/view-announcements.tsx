@@ -1,8 +1,8 @@
+import { getAnnouncements } from "@/service/announcements";
 import { ActionPanel, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useState } from "react";
 import TurndownService from "turndown";
-import { type Announcement, getAnnouncements } from "./service/announcements";
 
 const turndownService = new TurndownService();
 
@@ -22,7 +22,7 @@ function AnnouncementsList() {
       onSelectionChange={setSelectedId}
       isShowingDetail
     >
-      {data?.map((announcement: Announcement) => (
+      {data?.map((announcement) => (
         <List.Item
           key={announcement.title + announcement.publication_start_time}
           id={announcement.title + announcement.publication_start_time}
