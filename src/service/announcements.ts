@@ -1,27 +1,18 @@
-import { fetchAnnouncements } from "@/api";
-import { Cache } from "@raycast/api";
+import { fetchAnnouncements, type AnnouncementRaw } from "@/api";
+import { CacheManager } from "@/utils/cache";
 
-const cache = new Cache();
-
-const ANNOUNCEMENTS_CACHE_KEY = "ANNOUNCEMENTS_DATA";
-const ANNOUNCEMENTS_CACHE_TIMESTAMP_KEY = "ANNOUNCEMENTS_CACHE_TIMESTAMP";
+const cache = new CacheManager<AnnouncementRaw[]>({ key: "announcements" });
 
 export const getAnnouncements = async () => {
-  if (cache.get(ANNOUNCEMENTS_CACHE_TIMESTAMP_KEY)) {
-    const cachedTimestamp = parseInt(cache.get(ANNOUNCEMENTS_CACHE_TIMESTAMP_KEY) || "0", 10);
-    const currentTime = Date.now();
-    const cacheDuration = 1000 * 60 * 30;
+  const cachedData = cache.get();
 
-    if (currentTime - cachedTimestamp < cacheDuration) {
-      const announcements = JSON.parse(cache.get(ANNOUNCEMENTS_CACHE_KEY) || "[]");
-      return Promise.resolve(announcements);
-    }
+  if (cachedData) {
+    return cachedData;
   }
 
-  const data = await fetchAnnouncements();
+  const announcements = await fetchAnnouncements();
 
-  cache.set(ANNOUNCEMENTS_CACHE_KEY, JSON.stringify(data));
-  cache.set(ANNOUNCEMENTS_CACHE_TIMESTAMP_KEY, Date.now().toString());
+  cache.set(announcements);
 
-  return data;
+  return announcements;
 };

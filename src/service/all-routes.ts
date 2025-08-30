@@ -2,25 +2,16 @@ import { fetchRoutes, fetchStops, type RouteRaw, type StopRaw } from "@/api";
 import { extractAllRoutes, type Route } from "@/lib/routes";
 import { extractAllStops, type Stop } from "@/lib/stops";
 import Papa from "papaparse";
-import { Cache } from "@raycast/api";
+import { CacheManager } from "@/utils/cache";
 
-const cache = new Cache();
-
-const ROUTES_CACHE_TIMESTAMP_KEY = "ROUTES_CACHE_TIMESTAMP";
-const CACHE_EXPIRY = 1000 * 60 * 30;
-const ROUTES_CACHE_KEY = "ROUTES_DATA";
-const STOPS_CACHE_KEY = "STOPS_DATA";
+const cache = new CacheManager<{ routes: Route[]; serializedStops: [string, Stop][] }>({ key: "all-routes" });
 
 export const getAllRoutesData = async () => {
-  if (cache.get(ROUTES_CACHE_TIMESTAMP_KEY)) {
-    const cachedTimestamp = parseInt(cache.get(ROUTES_CACHE_TIMESTAMP_KEY) || "0", 10);
-    const currentTime = Date.now();
+  const cachedData = cache.get();
 
-    if (currentTime - cachedTimestamp < CACHE_EXPIRY) {
-      const routes = JSON.parse(cache.get(ROUTES_CACHE_KEY) || "[]") as Route[];
-      const stops = new Map<string, Stop>(JSON.parse(cache.get(STOPS_CACHE_KEY) || "[]"));
-      return { routes, stops };
-    }
+  if (cachedData) {
+    const { routes, serializedStops } = cachedData;
+    return { routes, stops: new Map(serializedStops) };
   }
 
   const [routesRaw, stopsRaw] = await Promise.all([fetchRoutes(), fetchStops()]);
@@ -38,9 +29,7 @@ export const getAllRoutesData = async () => {
   const { routes, relevantStopIds } = extractAllRoutes(parsedRoutes.data);
   const { stops } = extractAllStops(parsedStops.data, relevantStopIds);
 
-  cache.set(ROUTES_CACHE_KEY, JSON.stringify(routes));
-  cache.set(STOPS_CACHE_KEY, JSON.stringify(Array.from(stops)));
-  cache.set(ROUTES_CACHE_TIMESTAMP_KEY, Date.now().toString());
+  cache.set({ routes, serializedStops: Array.from(stops) });
 
   return { routes, stops };
 };
